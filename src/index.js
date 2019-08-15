@@ -1,12 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./components/App";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import rootReducers from "./reducers";
+import FavList from "./components/FavList";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const store = createStore(rootReducers);
+store.subscribe(() => console.log("store", store.getState()));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={App} />
+        <Route path="/fav" component={FavList} />
+      </Switch>
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById("root")
+);
